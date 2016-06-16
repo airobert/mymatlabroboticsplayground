@@ -100,31 +100,36 @@ while true
     % find all its neighbour nodes:
     neighbours = []
     % left
-    if (i-1 > 0) % not an obsteracle
-        if (input_map(i-1,j) == 0)
-            neighbours = [neighbours, sub2ind(size(map), i-1, j)];
+    if (i-1 > 0) % not an obsteracle, nor visited
+        neighbour = sub2ind(size(map), i-1, j);
+        if (input_map(neighbour) == 0 && map(neighbour) ~= 3 && map(neighbour) ~= 5)
+            neighbours = [neighbours, neighbour];
         end
     end 
     % right
     if (i+1 <= ncols)
-        if (input_map(i+1, j) == 0)
-            neighbours = [neighbours, sub2ind(size(map), i+1, j)];
+        neighbour = sub2ind(size(map), i+1, j);
+        if (input_map(neighbour) == 0 && map(neighbour) ~= 3 && map(neighbour) ~= 5)
+            neighbours = [neighbours, neighbour];
         end
     end 
     % top
     if (j-1 > 0)
-        if(input_map(i, j-1) == 0)
-            neighbours = [neighbours, sub2ind(size(map), i, j-1)];
+        neighbour = sub2ind(size(map), i, j-1);
+        if(input_map(neighbour) == 0 && map(neighbour) ~= 3 && map(neighbour) ~= 5)
+            neighbours = [neighbours, neighbour];
         end
     end 
     % bottom
     if (j+1 <= nrows)
-        if (input_map(i, j+1) == 0)
-            neighbours = [neighbours, sub2ind(size(map), i, j+1)];
+        neighbour = sub2ind(size(map), i, j+1);
+        if (input_map(neighbour) == 0 && map (neighbour) ~= 3 && map(neighbour) ~= 5)
+            neighbour = sub2ind(size(map), i, j+1);
+            neighbours = [neighbours, neighbour];
         end
     end 
-    neighbours;
-    numExpanded = numExpanded + length(neighbours)
+    parent
+    numExpanded = numExpanded + length(neighbours);
     
     % update the distance by comparing current record and 
     % current distance + 1
@@ -133,12 +138,14 @@ while true
     for neighbour = neighbours
         if (distanceFromStart(neighbour) > min_dist+1)
             distanceFromStart(neighbour)=min_dist+1;
-            parent(neighbour)= current
-            
+            parent(neighbour)= current;
+            if (map(neighbour) == 1)
+                map (neighbour) = 4;
+            end
         end
     end
     
-    
+    parent
     %*********************************************************************
 
 end

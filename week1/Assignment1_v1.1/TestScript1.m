@@ -15,6 +15,6 @@ dest_coords  = [8, 9];
 close all;
 [route, numExpanded] = DijkstraGrid (map, start_coords, dest_coords);
 
-
+route
 % Uncomment following line to run Astar
 % [route, numExpanded] = AStarGrid (map, start_coords, dest_coords);
