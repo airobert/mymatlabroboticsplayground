@@ -62,8 +62,26 @@ yd = dest_coords(2);
 
 % Evaluate Heuristic function, H, for each grid cell
 % Manhattan distance
-H = abs(X - xd) + abs(Y - yd);
-H = H';
+%H = abs(X - xd) + abs(Y - yd);
+%H = H';
+
+H = zeros(nrows, ncols)
+
+for i = 1:nrows
+    for j = 1:ncols
+        H(i, j) = abs(i - xd) + abs(j - yd)
+    end
+end
+
+
+H2 = zeros(nrows, ncols)
+
+for i = 1:nrows
+    for j = 1:ncols
+        H2(i, j) = sqrt((i - xd)^2 + (j - yd)^2)
+    end
+end
+
 % Initialize cost arrays
 f = Inf(nrows,ncols);
 g = Inf(nrows,ncols);
@@ -111,7 +129,55 @@ while true
     % entries in the map, f, g and parent arrays
     %
     
+        
+    % find all its neighbour nodes:
+    neighbours = []
+    % left
+    if (i-1 > 0) % not an obsteracle, nor visited
+        neighbour = sub2ind(size(map), i-1, j);
+        if (input_map(neighbour) == 0 && map(neighbour) ~= 3 && map(neighbour) ~= 5)
+            neighbours = [neighbours, neighbour];
+        end
+    end 
+    % right
+    if (i+1 <= ncols)
+        neighbour = sub2ind(size(map), i+1, j);
+        if (input_map(neighbour) == 0 && map(neighbour) ~= 3 && map(neighbour) ~= 5)
+            neighbours = [neighbours, neighbour];
+        end
+    end 
+    % top
+    if (j-1 > 0)
+        neighbour = sub2ind(size(map), i, j-1);
+        if(input_map(neighbour) == 0 && map(neighbour) ~= 3 && map(neighbour) ~= 5)
+            neighbours = [neighbours, neighbour];
+        end
+    end 
+    % bottom
+    if (j+1 <= nrows)
+        neighbour = sub2ind(size(map), i, j+1);
+        if (input_map(neighbour) == 0 && map (neighbour) ~= 3 && map(neighbour) ~= 5)
+            neighbour = sub2ind(size(map), i, j+1);
+            neighbours = [neighbours, neighbour];
+        end
+    end 
     
+    numExpanded = numExpanded + 1;
+    
+    % update the f values by comparing current record and 
+    % current distance + 1
+    % update parent by the way
+    
+    for neighbour = neighbours
+        if (g(neighbour) > min_f+1)
+            g(neighbour) = min_f+1;
+            f(neighbour) = H2(neighbour)
+            parent(neighbour)= current;
+            if (map(neighbour) == 1)
+                map (neighbour) = 4;
+            end
+        end
+        endgit 
     
     
     

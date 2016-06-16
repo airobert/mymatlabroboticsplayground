@@ -78,7 +78,7 @@ while true
     end
     
     % Find the node with the minimum distance
-    [min_dist, current] = min(distanceFromStart(:));
+    [min_dist, current] = min(distanceFromStart(:)); % KEY DIFFERENCE WITH A*
     
     if ((current == dest_node) || isinf(min_dist)) % why visited all the nodes
         break;
@@ -128,8 +128,8 @@ while true
             neighbours = [neighbours, neighbour];
         end
     end 
-    parent
-    numExpanded = numExpanded + length(neighbours);
+    
+    numExpanded = numExpanded + 1;
     
     % update the distance by comparing current record and 
     % current distance + 1
@@ -145,7 +145,6 @@ while true
         end
     end
     
-    parent
     %*********************************************************************
 
 end
